@@ -33,10 +33,8 @@ class Ping
       statistic = Statistic.new
     	if icmp.ping
     		ping_ms = (icmp.duration * 1000).round(3)
-    		print "#{ping_ms} ms".ljust(13, " ")
+    		puts "#{ping_ms} ms".ljust(13, " ")
 
-    		ping_int = ping_ms.to_i/10
-    		puts "".ljust(ping_int,".")
         statistic.host_id = host.id
         statistic.ping_ms = ping_ms
         statistic.save
@@ -84,15 +82,19 @@ class Stats
 
       if repeat > 0
         loss = ((pingfails / repeat)*100)
-        puts "#{repeat} packets transmitted, #{loss}% packet loss"
+        # puts "#{repeat} packets transmitted, #{loss}% packet loss"
+        packets_stats = {"packets transmitted" => repeat, "packet loss" => loss}
+        puts packets_stats.to_json
+        # binding.pry
       end
-      avg = math_array.mean.round(3) if math_array.mean != nil
-      min = math_array.min.round(3) if math_array.min != nil
-      max = math_array.max.round(3) if math_array.max != nil
-      stdev = math_array.standard_deviation.round(3) if math_array.standard_deviation != nil
+      @avg = math_array.mean.round(3) if math_array.mean != nil
+      @min = math_array.min.round(3) if math_array.min != nil
+      @max = math_array.max.round(3) if math_array.max != nil
+      @stdev = math_array.standard_deviation.round(3) if math_array.standard_deviation != nil
 
-
-      puts "round-trip min/avg/max/stddev = #{min}/#{avg}/#{max}/#{stdev} ms"
+      # puts "round-trip min/avg/max/stddev = #{min}/#{avg}/#{max}/#{stdev} ms"
+      round_trip = {"min" => @min,"avg" => @avg,"max" => @max}
+      puts round_trip.to_json
     end
   end
 end
