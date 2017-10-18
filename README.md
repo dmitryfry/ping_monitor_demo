@@ -1,1 +1,3 @@
-# ping_monitor_demo
+bundle
+rake migrate
+sudo bundle exec ruby server.rb
